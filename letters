@@ -1,0 +1,28 @@
+rez1 = 0.01;
+rez2 = 0.007;
+rez3 = 0.006;
+let size = 30;
+let gap = 0;
+
+let lets = ['a','g','x','f','p','r','m'];
+
+
+function setup() {
+  createCanvas(550, 550);
+  colorMode(HSB,360,120,100,255);
+  background(0,0,25);
+  textSize(size);
+  for (x = 0; x<width;x+=size+gap){
+    for (y=0;y<height;y+=size+gap){
+      n1 = noise(x*rez1,y*rez1);
+      n2 = noise(x*rez2+10000,y*rez2+10000);
+      n3 = noise(x*rez3+20000,y*rez3+20000);
+      fill(n3*360,100,90);
+      push();
+      translate(x,y);
+      rotate((n2-0.5)*PI);
+     text(lets[floor(n1*7)],0,0);
+      pop();
+    }
+  }
+}
