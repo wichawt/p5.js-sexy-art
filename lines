@@ -1,0 +1,195 @@
+
+rez1 = 0.003; //type
+rez2 = 0.003; //rotation
+numb = 15; //number of octagons across
+
+function setup() {
+  winSize = min(windowWidth, windowHeight) - 20;
+  createCanvas(winSize, winSize);
+  background(255);
+  rectMode(CENTER);
+  //strokeCap(SQUARE);
+  noFill();
+  size = width / numb;
+  col = color(0) //220,120,100);
+  stroke(col);
+  strokeWeight(max(1,size/7));
+  a = size / 2;
+  b = a * tan(PI/8);
+  d = (a + b)/2;
+  for (i = 0; i < numb + 1; i++) {
+    for (j = 0; j < numb + 1; j++) {
+      push();
+      translate(i * size, j * size);
+      stroke(0);
+      //drawOct();
+      stroke(col);
+      drawCurve();
+      pop();
+    }
+  }
+  for (i = 0; i < numb + 1; i++) {
+    for (j = 0; j < numb + 1; j++) {
+      push();
+      translate(i * size + a, j * size + a);
+      drawDiamond();
+      pop();
+    }
+  }
+}
+
+function drawOct(){
+  strokeWeight(3);
+  stroke(255,0,0);
+  beginShape();
+  vertex(-a,-b);
+  vertex(-b,-a);
+  vertex(b,-a);
+  vertex(a,-b);
+  vertex(a,b);
+  vertex(b,a);
+  vertex(-b,a);
+  vertex(-a,b);
+  endShape(CLOSE);
+  stroke(col)
+  strokeWeight(max(1,size/7));
+}
+
+function drawCurve() {
+  n1 = noise(i * size*rez1, j * size*rez1)-0.2;
+  n2 = noise(i * size*rez2+10000, j * size*rez2+10000)-0.2;
+  //curveType = random(0,5.5);
+  //curveType = min(n1 * 11,5.5);
+  curveType = min(random(5.5)*0.2+(n1 * 11*0.8),5.5);
+  push();
+  //rotate(floor(random(8)) * (PI *0.25));
+  //rotate(floor(n2*16)*(PI*0.25));
+  rotate(floor(random(8)*0.2+n2*16*0.8)*(PI*0.25));
+  if (curveType < 1) {
+    arc(-a, -b, b*2, b*2, -PI *0.25, PI *0.5);
+    arc(b, -a, b*2, b*2, PI *0.25, PI);
+    arc(a, b, b*2, b*2, PI * 0.75, PI * 1.5);
+    arc(-b, a, b*2, b*2, PI * 1.25, 0);
+  } else if (curveType < 2) {
+    arc(-a, -b, b*2, b*2, -PI *0.25, PI *0.5);
+    arc(a, -b, b*2, b*2, PI * 0.5, PI * 1.25);
+    arc(b, a, b*2, b*2, PI, PI * 1.75);
+    beginShape();
+    curveVertex(0, -a*1.01);
+    curveVertex(0, -a*1.01);
+    curveVertex(-size * 0.05, -size *0.2);
+    curveVertex(-size * 0.19, size * 0.13);
+    curveVertex(-d*1.01, d*1.01);
+    curveVertex(-d*1.01, d*1.01);
+    endShape();
+    stroke(255,0,0);
+    //point(-size * 0.05, -size *0.2);
+    //point(-size * 0.19, size * 0.13);
+    stroke(col);
+  } else if (curveType < 3){
+    arc(-a, -b, b*2, b*2, -PI *0.25, PI *0.5);
+    arc(a, b, b*2, b*2, PI * 0.75, PI * 1.5);
+    beginShape();
+    curveVertex(0, -a*1.01);
+    curveVertex(0, -a*1.01);
+    curveVertex(-size * 0.05, -size *0.2);
+    curveVertex(-size * 0.19, size * 0.13);
+    curveVertex(-d*1.01, d*1.01);
+    curveVertex(-d*1.01, d*1.01);
+    endShape();
+    beginShape();
+    curveVertex(0,a);
+    curveVertex(0,a);
+    curveVertex(size * 0.05, size *0.2);
+    curveVertex(size * 0.19, -size * 0.13);
+    curveVertex(d,-d);
+    curveVertex(d,-d);
+    endShape();
+  } else if (curveType<4){
+    pt1 = -size*0.14;
+    pt2 = -size*0.20;
+    pt3 = size*0.14;
+    pt4 = -size*0.20;
+    beginShape();
+    curveVertex(-d,-d);
+    curveVertex(-d,-d);
+    curveVertex(pt1,pt2);
+    curveVertex(pt3,pt4);
+    curveVertex(d,-d);
+    curveVertex(d,-d);
+    endShape();
+    stroke(255,0,0);
+    //point(pt1,pt2);
+    //point(pt3,pt4);
+    stroke(col);
+    beginShape();
+    curveVertex(-d,d);
+    curveVertex(-d,d);
+    curveVertex(pt1,-pt2);
+    curveVertex(pt3,-pt4);
+    curveVertex(d,d);
+    curveVertex(d,d);
+    endShape();
+    pt5 = size*0.05;
+    pt6 = -size*0.25;
+    pt7 = size*0.25;
+    pt8 = -size*0.05;
+    beginShape();
+    curveVertex(0,-a);
+    curveVertex(0,-a);
+    curveVertex(pt5,pt6);
+    curveVertex(pt7,pt8);
+    curveVertex(a,0);
+    curveVertex(a,0);
+    endShape();
+    stroke(0);
+    //point(pt5,pt6);
+    //point(pt7,pt8);
+    stroke(col);
+    beginShape();
+    curveVertex(0,a);
+    curveVertex(0,a);
+    curveVertex(-pt5,-pt6);
+    curveVertex(-pt7,-pt8);
+    curveVertex(-a,0);
+    curveVertex(-a,0);
+    endShape();
+  }
+  else if (curveType<5){
+    line(0,-a,0,a);
+    line(-a,0,a,0);
+    line(-d,-d,d,d);
+    line(-d,d,d,-d);
+  } else if (curveType<6){
+     line(0,-a,0,a);
+    line(-a,0,a,0);
+    line(-d,-d,d,d);
+    line(-d,d,d,-d);
+    noStroke();
+    fill(0);
+    circle(0,0,d*1.5);
+    noFill();
+    stroke(col);
+  }
+  pop();
+}
+
+function drawDiamond() {
+  push();
+  rotate(PI*0.25);
+  rotate(floor(random(2)) * PI*0.5);
+  if (random(2) < 0.2) { //crossover chance
+    line(-b, 0, b, 0);
+    line(0, -b, 0, b);
+  } else {
+    arc(-b, -b, b*2,b*2, 0, PI *0.5);
+    arc(b, b, b*2,b*2, PI, PI * 1.5);
+  }
+  pop();
+}
+
+function keyTyped() {
+  if (key === "s") {
+    save("myCanvas.png");
+  }
+}
